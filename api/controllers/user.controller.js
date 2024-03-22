@@ -117,3 +117,24 @@ export const getUsers = async(req, res, next)=>{
     next(error);
   }
 }
+
+
+export const deleteUserFromList = async(req, res, next)=>{
+ if(req.user.id === req.params.userId){
+  return next(errorHandler(402, 'You cannot delete your account itself'))
+ }
+
+ if(!req.user.isAdmin){
+  return next(errorHandler(402, 'Admin can only delete users '))
+
+ }
+  try {
+    const deleted = await User.findByIdAndDelete(req.params.userId);
+
+    res.status(200).json("User sucessfully deleted !");
+
+
+  } catch (error) {
+    next(error)
+  }
+}
