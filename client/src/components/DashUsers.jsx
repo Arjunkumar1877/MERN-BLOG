@@ -125,7 +125,7 @@ try {
 
     </>
   ): (
-    <p>You have no posts yet!</p>
+    <p>No Users!</p>
   )
 }
         
