@@ -1,7 +1,7 @@
 import { Alert, Button, TextInput } from "flowbite-react";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Comment from "./Comment";
 
 function CommentSection({ postId }) {
@@ -9,6 +9,7 @@ function CommentSection({ postId }) {
   const [comment, setComment] = useState("");
   const [commentError, setCommentError] = useState(null);
   const [comments, setComments] = useState([]);
+  const navigate = useNavigate()
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -24,7 +25,7 @@ function CommentSection({ postId }) {
         }),
       });
       const data = await res.json();
-      console.log(data);
+      // console.log(data);
       if (res.ok) {
         setComment("");
         setCommentError(null);
@@ -55,8 +56,46 @@ function CommentSection({ postId }) {
     getComments();
   }, [postId])
 
-  console.log(comments)
+  console.log(comments);
 
+  const handleLikes = async(commentId)=>{
+   try {
+    if(!currentUser){
+      navigate('/sign-in');
+      return;
+    }
+
+    const res = await fetch(`/api/comment/likeComment/${commentId}`, {
+      method: 'PUT'
+    });
+   
+    if (res.ok){
+      const data = await res.json();
+      console.log(data);
+
+      setComments(comments.map((com)=>  {
+        return com._id === commentId ? {
+        ...com, likes: data.likes.length, numberOfLikes: data.numberOfLikes
+      }: com
+    }))
+    
+    }
+    
+    
+
+   } catch (error) {
+    console.log(error.message)
+   }
+  }
+
+  const handleEdit = async (comment, editedContent) => {
+    setComments(
+      comments.map((c) =>
+        c._id === comment._id ? { ...c, content: editedContent } : c
+      )
+    );
+  };
+  
   return (
     <div className="max-w-2xl mx-auto w-full p-3">
       {currentUser ? (
@@ -129,7 +168,7 @@ function CommentSection({ postId }) {
     
         {
             comments.map((comment)=>(
-                <Comment key={comment._id} comment={comment}/>
+                <Comment key={comment._id} comment={comment} onLike={handleLikes} onEdit={handleEdit}/>
             ))
         }
     </>
