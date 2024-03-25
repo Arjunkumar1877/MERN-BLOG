@@ -5,6 +5,7 @@ import DashSidebar from "../components/DashSidebar";
 import DashPost from "../components/DashPost";
 import DashUsers from "../components/DashUsers";
 import DashComments from "../components/DashComments";
+import DashboardComponent from "../components/DashboardComponent";
 
 
 function Dashboard() {
@@ -36,6 +37,9 @@ function Dashboard() {
 
         {/* Comments  */}
         {tab === 'comments' && <DashComments />}
+
+        {/* dashboard */}
+        {tab === 'dash' && <DashboardComponent />} 
 
     </div>
   )
