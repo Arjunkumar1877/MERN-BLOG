@@ -12,7 +12,7 @@ export default function CallToAction() {
             </p>
 
             <Button gradientDuoTone='purpleToPink' className="rounded-tl-xl rounded-bl-none">
-              <a href="https://facebook.com" target="_blank" rel="noopener noreferrer">
+              <a href="" target="_blank" rel="noopener noreferrer">
               Lern More
               </a>
             </Button>
