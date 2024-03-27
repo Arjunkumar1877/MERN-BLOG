@@ -37,6 +37,7 @@ export const getPostComments = async (req, res, next) => {
 
 export const editComment = async (req, res, next) => {
   try {
+    console.log(req.body)
     const comment = await Comments.findById(req.params.commentId);
     console.log(req.body.content + " " + req.params.commentId);
     if (!comment) {
