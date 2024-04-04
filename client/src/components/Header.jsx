@@ -38,6 +38,7 @@ console.log(searchTerm)
             console.log(data.message);
           }else{
             dispatch(signoutSuccess())
+            navigate('/sign-in')
           }
     
         } catch (error) {

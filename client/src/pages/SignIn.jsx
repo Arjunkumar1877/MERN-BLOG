@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import  { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Alert, Button, Label, Spinner, TextInput } from 'flowbite-react';
 import { signInFailure, signInStart, signInSuccess } from '../redux/user/userSlice';
@@ -7,7 +7,7 @@ import OAuth from '../components/OAuth';
 
 function SignIn() {
   const dispatch = useDispatch();
-  const {loading, error: errorMessage} = useSelector(state => state.user);
+  const {loading, error: errorMessage, currentUser} = useSelector(state => state.user);
   const [formData, setFormData] = useState({});
   const navigate = useNavigate();
 
@@ -21,7 +21,6 @@ function SignIn() {
     if(!formData.email || !formData.password){
       return dispatch(signInFailure("Please fill all the fields"))
     }
-
     try {
       dispatch(signInStart());
       const res = await fetch('/api/auth/signin', {
@@ -47,6 +46,12 @@ function SignIn() {
     }
     
   }
+
+  useEffect(()=>{
+    if(currentUser){
+      navigate('/');
+    }
+    }, [])
 
   console.log(errorMessage)
 
